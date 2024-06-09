@@ -1,0 +1,15 @@
+    ALBA
+    ROJO
+    1
+
+    COLORIN
+    BLANCO
+    0.5
+
+    POLACRIN
+    NEGRO
+    4
+
+    COLORIN
+    BLANCO
+    0.5
