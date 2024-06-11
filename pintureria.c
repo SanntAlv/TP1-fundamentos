@@ -16,11 +16,20 @@ void insertarLista (tpuntero *cabeza, int e){
 	*cabeza=nuevo;
 }
 
+void borrarLista (tpuntero *cabeza){
+	tpuntero actual;
 
+	while(*cabeza!=NULL){
+		actual=*cabeza;
+		*cabeza=(*cabeza)->siguiente;
+		free(actual);
+	}
+}
 
 int main(){
 
     printf("Hola Mundo\n");
+
     return 0;
 
 }
