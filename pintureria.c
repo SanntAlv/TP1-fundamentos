@@ -26,6 +26,14 @@ void borrarLista (tpuntero *cabeza){
 	}
 }
 
+void imprimirLista(tpuntero cabeza){
+	while(cabeza!=NULL){
+		printf("%4d",cabeza->valor);
+		cabeza=cabeza->siguiente;
+	}
+}
+
+
 int main(){
 
     printf("Hola Mundo\n");
