@@ -29,25 +29,33 @@ variable float utilizando memoria dinámica.
 
 a. Agregar producto: El usuario ingresa una Marca, Color y Tamaño de lata y la misma se agregar a la lista enlazada
 Entrada:
+
     “Ingrese la Marca:” Alba
     “Ingrese el Color:” Blanco
     “Ingrese el Tamaño de la lata:” 4
+
 Salida:
 “Producto Agregado” (y se agrega a la lista enlazada)
 
 b. Remover producto: El usuario ingresa una Marca, Color y Tamaño de lata y la misma se quita de la lista enlazada. Mostrar un cartel
+
     “Producto no encontrado” si el producto no se encontraba en la lista Entrada:
     “Ingrese la Marca:” Alba
     “Ingrese el Color:” Blanco
     “Ingrese el Tamaño de la lata:” 4
+
 Salida:
+
     “Producto Removido” (y se quita de la lista enlazada)
 
 c. Verificar Disponibilidad: El usuario ingresa un Color y el sistema muestra una lista de Marcas y Tamaños de lata de ese color o un
 mensaje “Color no disponible” si no hay latas de ese color (puede repetirse datos de salida si hay mas de una lata de la misma marca, color y tamaño)
 Entrada:
+
     “Ingrese el Color:” Blanco
+
 Salida:
+
     ALBA, 4 litros
     COLORIN, 1 litro
     ALBA, 0.5 litros
@@ -56,16 +64,22 @@ d. Verificar Color y Cantidad: El usuario ingresa un color y un tamaño de lata 
 o un mensaje de “Stock no disponible” si no hay una lata de ese color y tamaño. Cada marca debe aparecer una sola vez, aunque haya más
 de una lata de una marca con ese color y tamaño
 Entrada:
+
     “Ingrese el Color:” Blanco
     “Ingrese Tamaño de lata:” 1
+
 Salida:
+
     “Marcas Disponibles: ALBA, COLORIN”
 
 e. Total Color: Muestra una lista de Marcas, el total de pintura en litros, y la cantidad de latas de un color ingresado por el usuario. Cada marca
 debe aparecer una sola vez, aunque haya mas de una lata de esa marca y color
 Entrada:
+
     “Ingrese el Color:” Blanco
+
 Salida:
+
     Marcas: ALBA, COLORIN
     Total Color: 12,5 litros
     Cantidad de Latas: 4
@@ -73,16 +87,23 @@ Salida:
 f. Total Marca: Muestra una lista de los colores disponibles y la cantidad de latas de una marca ingresada por el usuario. Cada color debe
 aparecer una sola vez aunque haya mas de una lata de esa marca y color
 Entrada:
+
     “Ingrese la Marca”: Alba
+
 Salida:
+
     Colores: AZUL, BLANCO, NEGRO
     Cantidad de latas: 5
 
 g. Total por Marca y Color: Muestra la cantidad total de pintura en litros y la cantidad total de latas de una Marca y Color ingresado por el usuario.
+
 Entrada:
+
     “Ingrese la Marca”: Alba
     “Ingrese el Color”: Rojo
+
 Salida:
+
     “Total Color: 15 litros”
     “Cantidad de latas: 4”
 
@@ -94,14 +115,17 @@ información presentada. Si el usuario elige generar el archivo, el sistema debe
 .TXT y el mismo contenido mostrado en pantalla (entrada y salida).
 
 5) Implementar la lista enlazada con las siguientes estructuras en un archivo header (.H):
+
     typedef struct lista {
         p_nodo nodo;
         int cantidad_nodos;
     } lista, *p_lista;
+
     typedef struct nodo {
         p_lata elemento;
         p_nodo siguiente;
     } nodo, *p_nodo;
+
     typedef struct lata {
         char Marca[20];
         char Color[20];
