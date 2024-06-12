@@ -78,6 +78,37 @@ void guardarEnArchivo(const char *nombreArchivo, lata *cabeza) {
     fclose(archivo);
 }
 
+void borrarProducto(lata **cabeza, char *marca, char *color, float tamanio){
+    lata *temp = *cabeza;
+    lata *prev = NULL;
+
+    // Si la cabeza contiene el producto a eliminar
+    if (temp != NULL && strcmp(temp->marca, marca) == 0 && strcmp(temp->color, color) == 0 && temp->tamanio == tamanio) {
+        *cabeza = temp->pLata;
+        free(temp);
+        printf("\n[PRODUCTO BORRADO]\n");
+        return;
+    }
+
+    // Buscar el producto en la lista
+    while (temp != NULL && (strcmp(temp->marca, marca) != 0 || strcmp(temp->color, color) != 0 || temp->tamanio != tamanio)) {
+        prev = temp;
+        temp = temp->pLata;
+    }
+
+    // Si el producto no se encuentra en la lista
+    if (temp == NULL) {
+        printf("\n[PRODUCTO NO ENCONTRADO]\n");
+        return;
+    }
+
+    // Desconectar el nodo de la lista
+    prev->pLata = temp->pLata;
+    free(temp);
+
+}
+
+
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
             printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
@@ -102,16 +133,22 @@ int main(){
 	leerArchivo("stock.txt",&cabeza);
 	int opcion;
 	int validarOpcion;
+
     printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\n");
-	while (opcion!=-1){
+	
+    while (opcion!=-1){
+
 		printf("\nIngrese una opcion: ");
 		validarOpcion=scanf("%d",&opcion);
         validacionInt(opcion,validarOpcion);
+
 		if(opcion==1){
+
 			char marca[20];
 			char color[20];
 			float tamanio;
             int validarOpcion;
+
 			printf("\nIngrese el nombre de la marca de la lata: ");
 			scanf("%19s",marca);
 
@@ -125,10 +162,11 @@ int main(){
             } while (tamanio == -1);
 
 			agregarProducto(&cabeza, marca, color, tamanio);
-			//imprimirLista(cabeza);
+			imprimirLista(cabeza);
             printf("\n[PRODUCTO AGREGADO]\n");
 			
 		}else if(opcion==2){
+
             char marca[20];
 			char color[20];
 			float tamanio;
@@ -145,6 +183,8 @@ int main(){
                 validacionFloat(&tamanio, validarOpcion);
             } while (tamanio == -1);
 
+            borrarProducto(&cabeza, marca, color, tamanio);
+            imprimirLista(cabeza);
 
         }else{
             printf("\n\nERROR, ingrese una opcion valida\n\n");
@@ -153,8 +193,7 @@ int main(){
                 continue;
             }
         }
-	}
-	
+	}   
 
 	liberarLista(cabeza);
 
