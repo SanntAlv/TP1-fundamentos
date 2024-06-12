@@ -48,7 +48,7 @@ void leerArchivo(const char *nombreArchivo, lata **cabeza) {
 void imprimirLista(lata *cabeza) {
     lata *temp = cabeza;
     while (temp != NULL) {
-        printf("Marca: %s, Color: %s, Cantidad: %.2f\n", temp->marca, temp->color, temp->tamanio);
+        printf("\n%s\n%s\n%.2f\n", temp->marca, temp->color, temp->tamanio);
         temp = temp->pLata;
     }
 }
@@ -81,7 +81,6 @@ void guardarEnArchivo(const char *nombreArchivo, lata *cabeza) {
 void borrarProducto(lata **cabeza, char *marca, char *color, float tamanio){
     lata *temp = *cabeza;
     lata *prev = NULL;
-
     // Si la cabeza contiene el producto a eliminar
     if (temp != NULL && strcmp(temp->marca, marca) == 0 && strcmp(temp->color, color) == 0 && temp->tamanio == tamanio) {
         *cabeza = temp->pLata;
@@ -134,7 +133,7 @@ int main(){
 	int opcion;
 	int validarOpcion;
 
-    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\n");
+    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponivilidad de un color\n");
 	
     while (opcion!=-1){
 
@@ -185,6 +184,25 @@ int main(){
 
             borrarProducto(&cabeza, marca, color, tamanio);
             imprimirLista(cabeza);
+
+        }else if(opcion==3){
+
+            char color[20];
+            char opcionC;
+
+            printf("\nIngrese el color: ");
+            scanf("%19s",color);
+
+            //aca va la funcion que buscas todas las latas de ese color
+
+            printf("\n¿Desea guardar esta informacion en un archivo de texto(s/n)?: ");
+            scanf("%c",&opcionC);//por aca hay un error
+
+            if (opcionC == 's' || opcionC == 'S') {
+                //aca va la funcion para guardar
+            } else if (opcionC == 'n' || opcionC == 'N') {
+                printf("\nNo se guardará la información\n");
+            } 
 
         }else{
             printf("\n\nERROR, ingrese una opcion valida\n\n");
