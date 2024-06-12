@@ -85,7 +85,15 @@ void validacionInt(int opcion, int scanfopcion){
                 opcion=1;
                 continue;
             }
-        }
+    }
+}
+
+void validacionFloat(float *opcion, int scanfopcion){
+    if(scanfopcion!=1){      
+            printf("\n\nERROR, el dato ingresado no es valido\n\n");
+            while(getchar()!='\n');
+            *opcion=-1;
+    }
 }
 
 int main(){
@@ -102,15 +110,18 @@ int main(){
 			char marca[20];
 			char color[20];
 			float tamanio;
-
+            int validarOpcion;
 			printf("\nIngrese el nombre de la marca de la lata: ");
-			scanf("%s",marca);
+			scanf("%19s",marca);
 
 			printf("\nIngrese el color de la lata: ");
-			scanf("%s",color);
+			scanf("%19s",color);
 
-			printf("\nIngrese el tamaño de la lata: ");
-			scanf("%f",&tamanio);
+            do {
+                printf("\nIngrese el tamaño de la lata: ");
+                validarOpcion = scanf("%f", &tamanio);
+                validacionFloat(&tamanio, validarOpcion);
+            } while (tamanio == -1);
 
 			agregarProducto(&cabeza, marca, color, tamanio);
 			//imprimirLista(cabeza);
