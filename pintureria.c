@@ -78,15 +78,26 @@ void guardarEnArchivo(const char *nombreArchivo, lata *cabeza) {
     fclose(archivo);
 }
 
+void validacionInt(int opcion, int scanfopcion){
+    if(scanfopcion!=1){      
+            printf("\n\nERROR, el dato ingresado no es valido\n\n");
+            while(getchar()!='\n'){    
+                opcion=1;
+                continue;
+            }
+        }
+}
+
 int main(){
 	
 	lata *cabeza=NULL;
 	leerArchivo("stock.txt",&cabeza);
 	int opcion;
-	opcion=0;
+	int validarOpcion;
 	while (opcion!=-1){
 		printf("\nIngrese una opcion: ");
-		scanf("%dd",&opcion);
+		validarOpcion=scanf("%d",&opcion);
+        validacionInt(opcion,validarOpcion);
 		if(opcion==1){
 			char marca[20];
 			char color[20];
@@ -102,23 +113,32 @@ int main(){
 			scanf("%f",&tamanio);
 
 			agregarProducto(&cabeza, marca, color, tamanio);
-			imprimirLista(cabeza);
-
-			char *rt;
-			printf("\nDesea guardar esta informacion en un archivo de texto (SI/NO): ");
-			scanf("%s",rt);
-			if (strcmp(rt, "SI") == 0) {
-        		printf("algo\n");
-    		} else if (strcmp(rt, "NO") != 0) {
-        		printf("\nERROR, el dato ingresado no es correcto\n");
-    		}
+			//imprimirLista(cabeza);
+            printf("\n[PRODUCTO AGREGADO]\n");
 			
-		}
+		}else if(opcion==2){
+            char marca[20];
+			char color[20];
+			float tamanio;
+
+            printf("\nIngrese el nombre de la marca de la lata: ");
+			scanf("%s",marca);
+
+			printf("\nIngrese el color de la lata: ");
+			scanf("%s",color);
+
+			printf("\nIngrese el tamaño de la lata: ");
+			scanf("%f",&tamanio);
+
+
+        }
 	}
 	
 
 	liberarLista(cabeza);
-	printf("\n\n[**********PROGRAMA FINALIZADO**********]\n\n");
+
+	printf("\n\n[**********PROGRAMA FINALIZADO**********]\n\n\n");
+
     return 0;
 
 }
