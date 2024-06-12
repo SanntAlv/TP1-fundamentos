@@ -80,7 +80,7 @@ void guardarEnArchivo(const char *nombreArchivo, lata *cabeza) {
 
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
-            printf("\n\nERROR, el dato ingresado no es valido\n\n");
+            printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
             while(getchar()!='\n'){    
                 opcion=1;
                 continue;
@@ -102,6 +102,7 @@ int main(){
 	leerArchivo("stock.txt",&cabeza);
 	int opcion;
 	int validarOpcion;
+    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\n");
 	while (opcion!=-1){
 		printf("\nIngrese una opcion: ");
 		validarOpcion=scanf("%d",&opcion);
@@ -133,15 +134,24 @@ int main(){
 			float tamanio;
 
             printf("\nIngrese el nombre de la marca de la lata: ");
-			scanf("%s",marca);
+			scanf("%19s",marca);
 
 			printf("\nIngrese el color de la lata: ");
-			scanf("%s",color);
+			scanf("%19s",color);
 
-			printf("\nIngrese el tamaño de la lata: ");
-			scanf("%f",&tamanio);
+            do {
+                printf("\nIngrese el tamaño de la lata: ");
+                validarOpcion = scanf("%f", &tamanio);
+                validacionFloat(&tamanio, validarOpcion);
+            } while (tamanio == -1);
 
 
+        }else{
+            printf("\n\nERROR, ingrese una opcion valida\n\n");
+            while(getchar()!='\n'){
+                opcion=1;
+                continue;
+            }
         }
 	}
 	
