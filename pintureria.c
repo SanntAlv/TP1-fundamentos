@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct lata {
 	char marca[20];
@@ -126,6 +127,11 @@ void validacionFloat(float *opcion, int scanfopcion){
     }
 }
 
+void convertirMayuscula(char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        str[i] = toupper((unsigned char) str[i]);
+    }
+}
 int main(){
 	
 	lata *cabeza=NULL;
@@ -150,9 +156,11 @@ int main(){
 
 			printf("\nIngrese el nombre de la marca de la lata: ");
 			scanf("%19s",marca);
+            convertirMayuscula(marca);
 
 			printf("\nIngrese el color de la lata: ");
 			scanf("%19s",color);
+            convertirMayuscula(color);
 
             do {
                 printf("\nIngrese el tamaño de la lata: ");
@@ -172,9 +180,11 @@ int main(){
 
             printf("\nIngrese el nombre de la marca de la lata: ");
 			scanf("%19s",marca);
+            convertirMayuscula(marca);
 
 			printf("\nIngrese el color de la lata: ");
 			scanf("%19s",color);
+            convertirMayuscula(color);
 
             do {
                 printf("\nIngrese el tamaño de la lata: ");
@@ -182,8 +192,8 @@ int main(){
                 validacionFloat(&tamanio, validarOpcion);
             } while (tamanio == -1);
 
-            borrarProducto(&cabeza, marca, color, tamanio);
             imprimirLista(cabeza);
+            borrarProducto(&cabeza, marca, color, tamanio);
 
         }else if(opcion==3){
 
