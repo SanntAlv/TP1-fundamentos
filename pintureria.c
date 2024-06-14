@@ -27,6 +27,7 @@ void agregarProducto(lata **cabeza, char *marca, char *color, float cantidad) {
     lata *nuevolata = crearProducto(marca, color, cantidad);
     nuevolata->pLata = *cabeza;
     *cabeza = nuevolata;
+    printf("\n[PRODUCTO AGREGADO]\n");
 }
 
 void leerArchivo(const char *nombreArchivo, lata **cabeza) {
@@ -108,12 +109,11 @@ void borrarProducto(lata **cabeza, char *marca, char *color, float tamanio){
 
 }
 
-
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
             printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
             while(getchar()!='\n'){    
-                opcion=1;
+                opcion=0;
                 continue;
             }
     }
@@ -145,9 +145,15 @@ int main(){
 
 		printf("\nIngrese una opcion: ");
 		validarOpcion=scanf("%d",&opcion);
-        validacionInt(opcion,validarOpcion);
+        if(validarOpcion!=1){      //si el scanf no puede leer la entrada, entonces imprime un mensaje de error.
+            printf("\n\nERROR, el dato ingresado no es valido, recuerde que debe ingresar una opcion disponible\n\n");
+            while(getchar()!='\n'){     
+                opcion=0;
+                continue;
+            }
 
-		if(opcion==1){
+
+		}else if(opcion==1){
 
 			char marca[20];
 			char color[20];
@@ -170,7 +176,6 @@ int main(){
 
 			agregarProducto(&cabeza, marca, color, tamanio);
 			imprimirLista(cabeza);
-            printf("\n[PRODUCTO AGREGADO]\n");
 			
 		}else if(opcion==2){
 
@@ -192,8 +197,8 @@ int main(){
                 validacionFloat(&tamanio, validarOpcion);
             } while (tamanio == -1);
 
-            imprimirLista(cabeza);
             borrarProducto(&cabeza, marca, color, tamanio);
+            imprimirLista(cabeza);
 
         }else if(opcion==3){
 
@@ -202,6 +207,7 @@ int main(){
 
             printf("\nIngrese el color: ");
             scanf("%19s",color);
+            convertirMayuscula(color);
 
             //aca va la funcion que buscas todas las latas de ese color
 
@@ -214,10 +220,12 @@ int main(){
                 printf("\nNo se guardará la información\n");
             } 
 
-        }else{
+        }else if(opcion>4 || opcion<-1 && validarOpcion==1) {
+
             printf("\n\nERROR, ingrese una opcion valida\n\n");
+
             while(getchar()!='\n'){
-                opcion=1;
+                opcion=0;
                 continue;
             }
         }
