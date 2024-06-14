@@ -139,7 +139,7 @@ int main(){
 	int opcion;
 	int validarOpcion;
 
-    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponivilidad de un color\n");
+    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponivilidad de un color\nIngrese 4 para ver la disponibilidad de un color y tamaño\n");
 	
     while (opcion!=-1){
 
@@ -220,7 +220,34 @@ int main(){
                 printf("\nNo se guardará la información\n");
             } 
 
-        }else if(opcion>4 || opcion<-1 && validarOpcion==1) {
+        }else if(opcion==4){
+            char color[20];
+            float tamanio;
+            char opcionD;
+
+            printf("\nIngrese el color: ");
+            scanf("%19s",color);
+            convertirMayuscula(color);
+
+            do {
+                printf("\nIngrese el tamaño de la lata: ");
+                validarOpcion = scanf("%f", &tamanio);
+                validacionFloat(&tamanio, validarOpcion);
+            } while (tamanio == -1);
+
+            //aca va la funcion
+
+            printf("\n¿Desea guardar esta informacion en un archivo de texto(s/n)?: ");
+            scanf("%c",&opcionD);//por aca hay un error
+
+            if (opcionD == 's' || opcionD == 'S') {
+                //aca va la funcion para guardar
+            } else if (opcionD == 'n' || opcionD == 'N') {
+                printf("\nNo se guardará la información\n");
+            } 
+
+
+        }else if(opcion>5 || opcion<-1 && validarOpcion==1) {
 
             printf("\n\nERROR, ingrese una opcion valida\n\n");
 
