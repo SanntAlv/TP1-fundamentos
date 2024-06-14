@@ -108,6 +108,50 @@ void borrarProducto(lata **cabeza, char *marca, char *color, float tamanio){
 
 }
 
+void disponibilidadColor(lata *cabeza, char* color){
+
+    typedef struct {
+        char marca[20];
+        float tamanio;
+    }suma;
+    
+    lata *temp = cabeza;
+    int encontrado;
+    suma sumas[20];
+    int cantSumas=0;
+    int marcaEncotrada=0;
+
+    while(temp!=NULL){
+        if (strcmp(temp->color, color) == 0){
+            encontrado=1;
+            
+            for(int i;i<cantSumas;i++){
+                if(strcmp(sumas[i].marca, temp->marca)==0){
+                    sumas[i].tamanio+=temp->tamanio;
+                    marcaEncotrada=1;
+                    break;
+                }
+            }
+
+            if(!marcaEncotrada){
+                strcpy(sumas[cantSumas].marca, temp->marca);
+                sumas[cantSumas].tamanio = temp->tamanio;
+                cantSumas++;
+            }
+        }
+        temp = temp->pLata;
+    }
+    if (encontrado) {
+        printf("\nLos productos con ese color son:\n");
+        for (int i = 0; i < cantSumas; i++) {
+           printf("\n%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
+        }
+    }else if(!encontrado){
+        printf("Color no disponible\n");
+    }
+    
+}
+
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
             printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
@@ -131,21 +175,8 @@ void convertirMayuscula(char *str) {
         str[i] = toupper((unsigned char) str[i]);
     }
 }
-void disponibilidad_color(const char *nombreArchivo, lata *cabeza,char* color){
-    FILE *archivo = fopen(nombreArchivo, "r");
-    if (archivo == NULL) {
-        printf("No se pudo abrir para ver la disponibilidad de prodcutos.\n");
-        exit(1);
-    }
-    lata *temp = cabeza;
-    if (color==temp->color) {
-        printf("Los productos con ese color son:\n%s\n%.2f\n", temp->marca,temp->tamanio);
-    }
-    else{
-        printf("\nColor no disponible\n");
-    }
-    fclose(archivo);
-}
+
+
 int main(){
 	
 	lata *cabeza=NULL;
@@ -191,7 +222,7 @@ int main(){
             printf("\n[Producto agregado]\n");
 			agregarProducto(&cabeza, marca, color, tamanio);
 			imprimirLista(cabeza);
-            guardarEnArchivo(nombre_archivo,cabeza);            
+            //guardarEnArchivo(nombre_archivo,cabeza);            
 		}else if(opcion==2){
 
             char marca[20];
@@ -214,7 +245,7 @@ int main(){
 
             borrarProducto(&cabeza, marca, color, tamanio);
             imprimirLista(cabeza);
-            guardarEnArchivo(nombre_archivo,cabeza);            
+            //guardarEnArchivo(nombre_archivo,cabeza);            
 
         }else if(opcion==3){
 
@@ -225,11 +256,10 @@ int main(){
             printf("\nIngrese el color: ");
             scanf("%19s",color);
             convertirMayuscula(color);
-            printf("\nEn que archivo desea ver que productos hay con color %s? ",color);
-            scanf("%s",nombre_archivo);
-            disponibilidad_color(nombre_archivo,cabeza,color);
+            //printf("\nEn que archivo desea ver que productos hay con color %s? ",color);
+            //scanf("%s",nombre_archivo);
+            disponibilidadColor(cabeza,color);
             
-            //aca va la funcion que buscas todas las latas de ese color
 
             printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionC);
@@ -240,6 +270,7 @@ int main(){
             } else if (strcmp(opcionC, "NO") != 0) {
         		printf("\nERROR, el dato ingresado no es correcto\n");
             }
+
         }else if(opcion==4){
             char color[20];
             float tamanio;
