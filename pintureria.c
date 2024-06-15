@@ -83,7 +83,7 @@ void borrarProducto(lata **cabeza, char *marca, char *color, float tamanio){
     lata *temp = *cabeza;
     lata *prev = NULL;
     // Si la cabeza contiene el producto a eliminar
-    if (temp != NULL && strcmp(temp->marca, marca) == 0 && strcmp(temp->color, color) == 0 && temp->tamanio == tamanio) {
+    if (temp!=NULL && strcmp(temp->marca, marca) == 0 && strcmp(temp->color, color) == 0 && temp->tamanio == tamanio) {
         *cabeza = temp->pLata;
         free(temp);
         printf("\n[PRODUCTO BORRADO]\n");
@@ -108,7 +108,7 @@ void borrarProducto(lata **cabeza, char *marca, char *color, float tamanio){
 
 }
 
-void disponibilidadColor(lata *cabeza, char* color){
+void disponibilidadColor(lata *cabeza, char* color, char* buffer){
 
     typedef struct {
         char marca[20];
@@ -145,20 +145,21 @@ void disponibilidadColor(lata *cabeza, char* color){
         printf("\nLos productos con ese color son:\n");
         for (int i = 0; i < cantSumas; i++) {
            printf("\n%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
+           sprintf(buffer + strlen(buffer), "%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
         }
     }else if(!encontrado){
         printf("Color no disponible\n");
+        sprintf(buffer, "Color no disponible\n");
     }
-    
 }
 
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
-            printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
-            while(getchar()!='\n'){    
-                opcion=0;
-                continue;
-            }
+        printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
+        while(getchar()!='\n'){    
+            opcion=0;
+            continue;
+        }
     }
 }
 
@@ -170,9 +171,9 @@ void validacionFloat(float *opcion, int scanfopcion){
     }
 }
 
-void convertirMayuscula(char *str) {
-    for (int i = 0; str[i] != '\0'; i++) {
-        str[i] = toupper((unsigned char) str[i]);
+void convertirMayuscula(char *str){
+    for (int i=0;str[i]!='\0';i++){
+        str[i]=toupper((unsigned char) str[i]);
     }
 }
 
@@ -190,13 +191,13 @@ int main(){
 
 		printf("\nIngrese una opcion: ");
 		validarOpcion=scanf("%d",&opcion);
+
         if(validarOpcion!=1){      //si el scanf no puede leer la entrada, entonces imprime un mensaje de error.
             printf("\n\nERROR, el dato ingresado no es valido, recuerde que debe ingresar una opcion disponible\n\n");
             while(getchar()!='\n'){     
                 opcion=0;
                 continue;
             }
-
 
 		}else if(opcion==1){
 
@@ -222,7 +223,7 @@ int main(){
             printf("\n[Producto agregado]\n");
 			agregarProducto(&cabeza, marca, color, tamanio);
 			imprimirLista(cabeza);
-            //guardarEnArchivo(nombre_archivo,cabeza);            
+         
 		}else if(opcion==2){
 
             char marca[20];
@@ -245,7 +246,6 @@ int main(){
 
             borrarProducto(&cabeza, marca, color, tamanio);
             imprimirLista(cabeza);
-            //guardarEnArchivo(nombre_archivo,cabeza);            
 
         }else if(opcion==3){
 
@@ -256,19 +256,34 @@ int main(){
             printf("\nIngrese el color: ");
             scanf("%19s",color);
             convertirMayuscula(color);
-            //printf("\nEn que archivo desea ver que productos hay con color %s? ",color);
-            //scanf("%s",nombre_archivo);
-            disponibilidadColor(cabeza,color);
-            
 
+            char buffer[1000] = ""; // Buffer para almacenar la salida
+            disponibilidadColor(cabeza,color,buffer);
+            
             printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionC);
+            convertirMayuscula(opcionC);
+
 			if (strcmp(opcionC, "SI") == 0){
-                printf("\nEn que archivo desea guardarlo?: ");
+                printf("\nIngrese el nombre del archivo a guardar: ");
                 scanf("%s",nombre_archivo);
-        		guardarEnArchivo(nombre_archivo,cabeza);
-            } else if (strcmp(opcionC, "NO") != 0) {
-        		printf("\nERROR, el dato ingresado no es correcto\n");
+        		//guardarEnArchivo(nombre_archivo,cabeza);
+                strcat(nombre_archivo, ".txt");
+
+                FILE *archivoSalida = fopen(nombre_archivo, "w"); 
+                if (archivoSalida == NULL) {
+                    printf("No se pudo abrir el archivo para escribir\n");
+                    exit(1);
+                }
+
+                fprintf(archivoSalida, "Ingrese el Color: %s \n", color);
+                fprintf(archivoSalida,"%s",buffer);
+                fclose(archivoSalida);
+
+                printf("Información guardada en el archivo: %s\n", nombre_archivo);
+
+            }else if (strcmp(opcionC, "NO") == 0){
+        		printf("\nNo se guardara el archivo\n");
             }
 
         }else if(opcion==4){
@@ -283,22 +298,24 @@ int main(){
 
             do {
                 printf("\nIngrese el tamaño de la lata: ");
-                validarOpcion = scanf("%f", &tamanio);
+                validarOpcion=scanf("%f", &tamanio);
                 validacionFloat(&tamanio, validarOpcion);
-            } while (tamanio == -1);
+            } while(tamanio==-1);
 
             //aca va la funcion
 
             printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionD);
+
 			if (strcmp(opcionD, "SI") == 0) {
                 printf("\nEn que archivo desea guardarlo?: ");
                 scanf("%s",nombre_archivo);
-        		guardarEnArchivo(nombre_archivo,cabeza);
+        		//guardarEnArchivo(nombre_archivo,cabeza);
                 printf("Producto agregado\n");
-    		} else if (strcmp(opcionD, "NO") != 0) {
+    		}else if (strcmp(opcionD, "NO") != 0) {
         		printf("\nERROR, el dato ingresado no es correcto\n");
             }
+
         }else if(opcion>5 || opcion<-1 && validarOpcion==1) {
 
             printf("\n\nERROR, ingrese una opcion valida\n\n");
