@@ -116,7 +116,7 @@ void disponibilidadColor(lata *cabeza, char* color, char* buffer){
     }suma;
     
     lata *temp = cabeza;
-    int encontrado;
+    int encontrado=0;
     suma sumas[20];
     int cantSumas=0;
     int marcaEncotrada=0;
@@ -145,11 +145,11 @@ void disponibilidadColor(lata *cabeza, char* color, char* buffer){
         printf("\nLos productos con ese color son:\n");
         for (int i = 0; i < cantSumas; i++) {
            printf("\n%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
-           sprintf(buffer + strlen(buffer), "%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
+           sprintf(buffer + strlen(buffer), "\n%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
         }
     }else if(!encontrado){
-        printf("Color no disponible\n");
-        sprintf(buffer, "Color no disponible\n");
+        printf("\n[COLOR NO DISPONIBLE]\n");
+        sprintf(buffer, "\n[COLOR NO DISPONIBLE]\n");
     }
 }
 
@@ -252,9 +252,11 @@ int main(){
             char color[20];
             char opcionC[2];
             char nombre_archivo[20];
+            char colorElegido[20];
 
             printf("\nIngrese el color: ");
             scanf("%19s",color);
+            strcpy(colorElegido,color);
             convertirMayuscula(color);
 
             char buffer[1000] = ""; // Buffer para almacenar la salida
@@ -276,7 +278,7 @@ int main(){
                     exit(1);
                 }
 
-                fprintf(archivoSalida, "Ingrese el Color: %s \n", color);
+                fprintf(archivoSalida, "Ingrese el Color: %s \n", colorElegido);
                 fprintf(archivoSalida,"%s",buffer);
                 fclose(archivoSalida);
 
@@ -287,6 +289,7 @@ int main(){
             }
 
         }else if(opcion==4){
+
             char color[20];
             float tamanio;
             char opcionD[2];
