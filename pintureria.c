@@ -152,6 +152,93 @@ void disponibilidadColor(lata *cabeza, char* color, char* buffer){
         sprintf(buffer, "\n[COLOR NO DISPONIBLE]\n");
     }
 }
+void disponibilidadColor_Tamanio(lata *cabeza, char* color, float tamanio, char* buffer){
+
+    typedef struct {
+        char marca[20];
+    }suma;
+    
+    lata *temp = cabeza;
+    int encontrado=0;
+    suma sumas[20];
+    int cantSumas=0;
+    int marcaEncotrada=0;
+
+    while(temp!=NULL){
+        if ((strcmp(temp->color,color) == 0) && temp->tamanio==tamanio){
+            encontrado=1;
+            
+            for(int i;i<cantSumas;i++){
+                if(strcmp(sumas[i].marca, temp->marca)==0){
+                    marcaEncotrada=1;
+                    break;
+                }
+            }
+
+            if(!marcaEncotrada){
+                strcpy(sumas[cantSumas].marca, temp->marca);
+                cantSumas++;
+            }
+        }
+        temp = temp->pLata;
+    }
+    if (encontrado) {
+        printf("\nLos productos con ese color y tamaño son:\n");
+        for (int i = 0; i < cantSumas; i++) {
+           printf("\n%s", sumas[i].marca);
+           sprintf(buffer + strlen(buffer), "\n%s", sumas[i].marca);
+        }
+    }else if(!encontrado){
+        printf("\n[COLOR Y TAMAÑO NO DISPONIBLE]\n");
+        sprintf(buffer, "\n[COLOR Y TAMAÑO NO DISPONIBLE]\n");
+    }
+}
+void totalColor(lata *cabeza, char* color, char* buffer){
+
+    typedef struct {
+        char marca[20];
+        float tamanio;
+    }suma;
+    
+    lata *temp = cabeza;
+    int encontrado=0;
+    suma sumas[20];
+    int cantSumas=0;
+    int marcaEncotrada=0;
+
+    while(temp!=NULL){
+        if (strcmp(temp->color, color) == 0){
+            encontrado=1;
+            
+            for(int i;i<cantSumas;i++){
+                if((strcmp(temp->color,color)==0) && (strcmp(sumas[i].marca, temp->marca)==0)){
+                    sumas->tamanio+=temp->tamanio;
+                    marcaEncotrada=1;
+                    break;
+                }
+            }
+
+            if(!marcaEncotrada){
+                strcpy(sumas[cantSumas].marca, temp->marca);
+                sumas->tamanio += temp->tamanio;
+                cantSumas++;
+            }
+        }
+        temp = temp->pLata;
+    }
+    if (encontrado) {
+        printf("\nLos productos con ese color son:\nMarcas:");
+        for (int i = 0; i < cantSumas; i++) {
+            printf("%s ", sumas[i].marca);
+            printf("\nTotal color:%.2f\n",sumas->tamanio);
+            //printf("Cantidad de latas: %d",cantLatas);
+            sprintf(buffer + strlen(buffer), "\n%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
+        }
+    }else if(!encontrado){
+        printf("\n[COLOR NO DISPONIBLE]\n");
+        sprintf(buffer, "\n[COLOR NO DISPONIBLE]\n");
+    }
+}
 
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
@@ -285,7 +372,7 @@ int main(){
                 printf("Información guardada en el archivo: %s\n", nombre_archivo);
 
             }else if (strcmp(opcionC, "NO") == 0){
-        		printf("\nNo se guardara el archivo\n");
+        		printf("\nNo se guardará el archivo\n");
             }
 
         }else if(opcion==4){
@@ -293,31 +380,93 @@ int main(){
             char color[20];
             float tamanio;
             char opcionD[2];
-            char nombre_archivo[2];
+            char nombre_archivo[20];
+            char colorElegido[20];
+            float tamanioElegido;
 
             printf("\nIngrese el color: ");
             scanf("%19s",color);
+            strcpy(colorElegido,color);
             convertirMayuscula(color);
 
             do {
                 printf("\nIngrese el tamaño de la lata: ");
                 validarOpcion=scanf("%f", &tamanio);
                 validacionFloat(&tamanio, validarOpcion);
+                //(tamanioElegido,tamanio);
             } while(tamanio==-1);
-
-            //aca va la funcion
+            char buffer[1000] = ""; // Buffer para almacenar la salida
+            float buffer2;
+            disponibilidadColor_Tamanio(cabeza,color,tamanio,buffer);
 
             printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionD);
+            convertirMayuscula(opcionD);
 
 			if (strcmp(opcionD, "SI") == 0) {
                 printf("\nEn que archivo desea guardarlo?: ");
                 scanf("%s",nombre_archivo);
-        		//guardarEnArchivo(nombre_archivo,cabeza);
-                printf("Producto agregado\n");
+        		strcat(nombre_archivo, ".txt");
+
+                FILE *archivoSalida = fopen(nombre_archivo, "w"); 
+                if (archivoSalida == NULL) {
+                    printf("No se pudo abrir el archivo para escribir\n");
+                    exit(1);
+                }
+
+                fprintf(archivoSalida, "Ingrese el Color: %s \n", colorElegido);
+                fprintf(archivoSalida,"%s\n",buffer);
+                fprintf(archivoSalida,"Ingrese el tamaño de la lata: %.2f \n",tamanio);
+                fprintf(archivoSalida,"%.2f",buffer2);
+                fclose(archivoSalida);
+
+                printf("Información guardada en el archivo: %s\n", nombre_archivo);
+
     		}else if (strcmp(opcionD, "NO") != 0) {
-        		printf("\nERROR, el dato ingresado no es correcto\n");
+        		printf("\nNo se guardará el archivo\n");
             }
+            
+        }else if(opcion==5){
+
+            char color[20];
+            char opcionC[2];
+            char nombre_archivo[20];
+            char colorElegido[20];
+
+            printf("\nIngrese el color: ");
+            scanf("%19s",color);
+            strcpy(colorElegido,color);
+            convertirMayuscula(color);
+
+            char buffer[1000] = ""; // Buffer para almacenar la salida
+            totalColor(cabeza,color,buffer);
+            
+            printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
+            scanf("%s",opcionC);
+            convertirMayuscula(opcionC);
+
+			if (strcmp(opcionC, "SI") == 0){
+                printf("\nIngrese el nombre del archivo a guardar: ");
+                scanf("%s",nombre_archivo);
+        		//guardarEnArchivo(nombre_archivo,cabeza);
+                strcat(nombre_archivo, ".txt");
+
+                FILE *archivoSalida = fopen(nombre_archivo, "w"); 
+                if (archivoSalida == NULL) {
+                    printf("No se pudo abrir el archivo para escribir\n");
+                    exit(1);
+                }
+
+                fprintf(archivoSalida, "Ingrese el Color: %s \n", colorElegido);
+                fprintf(archivoSalida,"%s",buffer);
+                fclose(archivoSalida);
+
+                printf("Información guardada en el archivo: %s\n", nombre_archivo);
+
+            }else if (strcmp(opcionC, "NO") == 0){
+        		printf("\nNo se guardará el archivo\n");
+            }
+    
 
         }else if(opcion>5 || opcion<-1 && validarOpcion==1) {
 
