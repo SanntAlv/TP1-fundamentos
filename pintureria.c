@@ -320,9 +320,8 @@ void totalMarcaColor(lata *cabeza, char* color, char* marca, char* buffer){
 
     if (encontrado) {
         printf("\nTotal color: %.2f litros\n", tamanioTotal);
-        sprintf(buffer, "\nTotal color: %.2f litros\n", tamanioTotal);
         printf("Cantidad de latas: %d", cantLatas);
-        sprintf(buffer, "Cantidad de latas: %d", cantLatas);
+        sprintf(buffer + strlen(buffer), "\nTotal color: %.2f litros\nCantidad de latas: %d", tamanioTotal,cantLatas);
     
     }else if(!encontrado){
         printf("\n[MARCA Y COLOR NO DISPONIBLE]\n");
@@ -362,7 +361,7 @@ int main(){
 	int opcion;
 	int validarOpcion;
 
-    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponibilidad de un color\nIngrese 4 para ver la disponibilidad de un color y tamaño\nIngrese 5 para el total de pintura en litros, y la cantidad de latas de un color\nIngrese 6 para una lista de los colores disponibles y la cantidad de latas de una marca\n");
+    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponibilidad de un color\nIngrese 4 para ver la disponibilidad de un color y tamaño\nIngrese 5 para el total de pintura en litros, y la cantidad de latas de un color\nIngrese 6 para una lista de los colores disponibles y la cantidad de latas de una marca\nIngrese 7 para la cantidad total de pintura en litros y la cantidad total de latas de una marca y color\n");
     
     imprimirLista(cabeza);
     while (opcion!=-1){
@@ -636,7 +635,8 @@ int main(){
                     exit(1);
                 }
 
-                fprintf(archivoSalida, "Ingrese el Color: %s \n", marcaElegida);
+                fprintf(archivoSalida, "Ingrese la marca: %s \n", marcaElegida);
+                fprintf(archivoSalida, "Ingrese el color: %s \n", colorElegido);
                 fprintf(archivoSalida,"%s",buffer);
                 fclose(archivoSalida);
 
@@ -656,6 +656,8 @@ int main(){
             }
         }
 	}   
+
+    guardarEnArchivo("stock.txt",cabeza);
 
 	liberarLista(cabeza);
 
