@@ -540,6 +540,7 @@ int main(){
             convertirMayuscula(marca);
 
             char buffer[1000] = ""; // Buffer para almacenar la salida
+
             totalMarca(cabeza,marca,buffer);
             
             printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
@@ -569,7 +570,55 @@ int main(){
             }
             
  
-        }else if(opcion>6 || opcion<-1 && validarOpcion==1) {
+        }else if(opcion==7){
+
+            char marca[20];
+            char color[20];
+            char opcionG[2];
+            char nombre_archivo[20];
+            char marcaElegida[20];
+            char colorElegido[20];
+            char buffer[1000]="";
+
+            printf("\nIngrese la marca: ");
+            scanf("%19s",marca);
+            strcpy(marcaElegida,marca);
+            convertirMayuscula(marca);
+
+            printf("\nIngrese el color: ");
+            scanf("%19s",color);
+            strcpy(colorElegido,color);
+            convertirMayuscula(color);
+
+            //aca va la funcion
+
+            printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
+            scanf("%s",opcionG);
+            convertirMayuscula(opcionG);
+
+            if (strcmp(opcionG, "SI") == 0){
+                printf("\nIngrese el nombre del archivo a guardar: ");
+                scanf("%s",nombre_archivo);
+        		//guardarEnArchivo(nombre_archivo,cabeza);
+                strcat(nombre_archivo, ".txt");
+
+                FILE *archivoSalida = fopen(nombre_archivo, "w"); 
+                if (archivoSalida == NULL) {
+                    printf("\nNo se pudo abrir el archivo para escribir\n");
+                    exit(1);
+                }
+
+                fprintf(archivoSalida, "Ingrese el Color: %s \n", marcaElegida);
+                fprintf(archivoSalida,"%s",buffer);
+                fclose(archivoSalida);
+
+                printf("Información guardada en el archivo: %s\n", nombre_archivo);
+
+            }else if (strcmp(opcionG, "NO") == 0){
+        		printf("\nNo se guardará el archivo\n");
+            }
+
+        }else if(opcion>8 || opcion<-1 && validarOpcion==1) {
 
             printf("\n\nERROR, ingrese una opcion valida\n\n");
 
