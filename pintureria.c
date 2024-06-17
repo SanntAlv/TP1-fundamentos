@@ -362,8 +362,9 @@ int main(){
 	int validarOpcion;
 
     printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponibilidad de un color\nIngrese 4 para ver la disponibilidad de un color y tamaño\nIngrese 5 para el total de pintura en litros, y la cantidad de latas de un color\nIngrese 6 para una lista de los colores disponibles y la cantidad de latas de una marca\nIngrese 7 para la cantidad total de pintura en litros y la cantidad total de latas de una marca y color\n");
-    
+    printf("\nIngrese -1 para finalizar el programa\n");
     imprimirLista(cabeza);
+
     while (opcion!=-1){
 
 		printf("\nIngrese una opcion: ");
