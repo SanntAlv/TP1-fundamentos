@@ -183,9 +183,9 @@ void disponibilidadColor_Tamanio(lata *cabeza, char* color, float tamanio, char*
         temp = temp->pLata;
     }
     if (encontrado) {
-        printf("\nLos productos con ese color y tamaño son:\n");
+        printf("\nLas marcas de los productos con ese color y tamaño son:\n");
         for (int i = 0; i < cantSumas; i++) {
-           printf("\n%s", sumas[i].marca);
+           printf("\n%s\n", sumas[i].marca);
            sprintf(buffer + strlen(buffer), "\n%s", sumas[i].marca);
         }
     }else if(!encontrado){
@@ -205,22 +205,24 @@ void totalColor(lata *cabeza, char* color, char* buffer){
     suma sumas[20];
     int cantSumas=0;
     int marcaEncotrada=0;
+    float tamanioTotal;
+    int cantLatas;
 
     while(temp!=NULL){
         if (strcmp(temp->color, color) == 0){
             encontrado=1;
             
             for(int i;i<cantSumas;i++){
-                if((strcmp(temp->color,color)==0) && (strcmp(sumas[i].marca, temp->marca)==0)){
-                    sumas->tamanio+=temp->tamanio;
+                if(strcmp(sumas[i].marca, temp->marca)==0){
+                    sumas->tamanio += (temp->tamanio+tamanioTotal);
                     marcaEncotrada=1;
                     break;
                 }
             }
-
             if(!marcaEncotrada){
                 strcpy(sumas[cantSumas].marca, temp->marca);
-                sumas->tamanio += temp->tamanio;
+                sumas->tamanio = temp->tamanio;
+                tamanioTotal=sumas->tamanio;
                 cantSumas++;
             }
         }
@@ -230,10 +232,11 @@ void totalColor(lata *cabeza, char* color, char* buffer){
         printf("\nLos productos con ese color son:\nMarcas:");
         for (int i = 0; i < cantSumas; i++) {
             printf("%s ", sumas[i].marca);
-            printf("\nTotal color:%.2f\n",sumas->tamanio);
-            //printf("Cantidad de latas: %d",cantLatas);
-            sprintf(buffer + strlen(buffer), "\n%s, %.2f litros\n", sumas[i].marca, sumas[i].tamanio);
+            sprintf(buffer + strlen(buffer), "\n%s", sumas[i].marca);
         }
+        printf("\nTotal color:%.2f\n",sumas->tamanio);
+        //printf("Cantidad de latas: %d",cantLatas);
+        sprintf(buffer + strlen(buffer), "\n%.2f litros y cantidad de latas %d\n", sumas->tamanio,cantLatas);
     }else if(!encontrado){
         printf("\n[COLOR NO DISPONIBLE]\n");
         sprintf(buffer, "\n[COLOR NO DISPONIBLE]\n");
