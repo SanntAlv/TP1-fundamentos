@@ -152,6 +152,7 @@ void disponibilidadColor(lata *cabeza, char* color, char* buffer){
         sprintf(buffer, "\n[COLOR NO DISPONIBLE]\n");
     }
 }
+
 void disponibilidadColor_Tamanio(lata *cabeza, char* color, float tamanio, char* buffer){
 
     typedef struct {
@@ -184,15 +185,17 @@ void disponibilidadColor_Tamanio(lata *cabeza, char* color, float tamanio, char*
     }
     if (encontrado) {
         printf("\nLas marcas de los productos con ese color y tamaño son:\n");
+        sprintf(buffer, "\nLas marcas de los productos con ese color y tamaño son:\n");
         for (int i = 0; i < cantSumas; i++) {
-           printf("\n%s\n", sumas[i].marca);
-           sprintf(buffer + strlen(buffer), "\n%s", sumas[i].marca);
+            printf("\n%s\n", sumas[i].marca);
+            sprintf(buffer + strlen(buffer), "\n%s", sumas[i].marca);
         }
     }else if(!encontrado){
         printf("\n[COLOR Y TAMAÑO NO DISPONIBLE]\n");
         sprintf(buffer, "\n[COLOR Y TAMAÑO NO DISPONIBLE]\n");
     }
 }
+
 void totalColor(lata *cabeza, char* color, char* buffer){
 
     typedef struct {
@@ -205,7 +208,7 @@ void totalColor(lata *cabeza, char* color, char* buffer){
     suma sumas[20];
     int cantSumas=0;
     int marcaEncotrada=0;
-    float tamanioTotal;
+    float tamanioTotal=0;
     int cantLatas=0;
 
     while(temp!=NULL){
@@ -213,17 +216,19 @@ void totalColor(lata *cabeza, char* color, char* buffer){
             encontrado=1;
 
             for(int i;i<cantSumas;i++){
-                if(strcmp(sumas[i].marca, temp->marca)==0){
-                    sumas->tamanio += (temp->tamanio+tamanioTotal);
+                if (strcmp(sumas[i].marca, temp->marca) == 0) {
+                    sumas[i].tamanio += temp->tamanio;
+                    tamanioTotal += temp->tamanio;
                     cantLatas++;
-                    marcaEncotrada=1;
+                    marcaEncotrada = 1;
                     break;
                 }
             }
+            
             if(!marcaEncotrada){
                 strcpy(sumas[cantSumas].marca, temp->marca);
-                sumas->tamanio = temp->tamanio;
-                tamanioTotal=sumas->tamanio;
+                sumas[cantSumas].tamanio = temp->tamanio;
+                tamanioTotal += temp->tamanio;
                 cantSumas++;
                 cantLatas++;
             }
@@ -231,19 +236,22 @@ void totalColor(lata *cabeza, char* color, char* buffer){
         temp = temp->pLata;
     }
     if (encontrado) {
-        printf("\nLos productos con ese color son:\nMarcas:");
+        printf("\nLos productos con ese color son:\nMarcas: ");
+        sprintf(buffer, "\nLos productos con ese color son:\nMarcas: ");
         for (int i = 0; i < cantSumas; i++) {
             printf("%s ", sumas[i].marca);
-            sprintf(buffer + strlen(buffer), "\n%s", sumas[i].marca);
+            sprintf(buffer + strlen(buffer), "%s", sumas[i].marca);
         }
-        printf("\nTotal color:%.2f\n",sumas->tamanio);
+        printf("\nTotal color: %.2f\n",tamanioTotal);
         printf("Cantidad de latas: %d",cantLatas);
-        sprintf(buffer + strlen(buffer), "\n%.2f litros y cantidad de latas %d\n", sumas->tamanio,cantLatas);
+        sprintf(buffer + strlen(buffer), "\nTotal color: %.2f\nCantidad de latas: %d", sumas->tamanio,cantLatas);
+    
     }else if(!encontrado){
         printf("\n[COLOR NO DISPONIBLE]\n");
         sprintf(buffer, "\n[COLOR NO DISPONIBLE]\n");
     }
 }
+
 void totalMarca(lata *cabeza, char* marca, char* buffer){
 
     typedef struct {
@@ -255,36 +263,39 @@ void totalMarca(lata *cabeza, char* marca, char* buffer){
     int encontrado=0;
     suma sumas[20];
     int cantSumas=0;
-    int marcaEncotrada=0;
     int cantLatas=0;
 
     while(temp!=NULL){
-        if (strcmp(temp->marca, marca) == 0){
-            encontrado=1;
+        if (strcmp(temp->marca, marca) == 0) {
+            encontrado = 1;
+            int colorEncotrado = 0;
 
-            for(int i;i<cantSumas;i++){
-                if(strcmp(sumas[i].color, temp->color)==0){
-                    cantLatas++;
-                    marcaEncotrada=1;
+            for (int i = 0; i < cantSumas; i++) {
+                if (strcmp(sumas[i].color, temp->color) == 0) {
+                    colorEncotrado = 1;
                     break;
                 }
             }
-            if(!marcaEncotrada){
+
+            if (!colorEncotrado) {
                 strcpy(sumas[cantSumas].color, temp->color);
                 cantSumas++;
-                cantLatas++;
             }
+            cantLatas++;
         }
         temp = temp->pLata;
     }
     if (encontrado) {
-        printf("\nLos productos con esa marca son:\nColores:");
+        printf("\nLos productos con esa marca son:\nColores: ");
+        sprintf(buffer, "\nLos productos con esa marca son:");
         for (int i = 0; i < cantSumas; i++) {
             printf("%s ", sumas[i].color);
             sprintf(buffer + strlen(buffer), "\nColores: %s", sumas[i].color);
         }
+
         printf("\nCantidad de latas: %d",cantLatas);
         sprintf(buffer + strlen(buffer), "\nCantidad de latas %d\n",cantLatas);
+
     }else if(!encontrado){
         printf("\n[MARCA NO DISPONIBLE]\n");
         sprintf(buffer, "\n[MARCA NO DISPONIBLE]\n");
@@ -323,8 +334,9 @@ int main(){
 	int opcion;
 	int validarOpcion;
 
-    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponibilidad de un color\nIngrese 4 para ver la disponibilidad de un color y tamaño\nIngrese 5\nIngrese 6\n");
-	
+    printf("\n*****[MENU PRINCIPAL]*****\n\nIngrese 1 para agregar un producto\nIngrese 2 para eliminar un producto\nIngrese 3 para ver la disponibilidad de un color\nIngrese 4 para ver la disponibilidad de un color y tamaño\nIngrese 5 para el total de pintura en litros, y la cantidad de latas de un color\nIngrese 6 para una lista de los colores disponibles y la cantidad de latas de una marca\n");
+    
+    imprimirLista(cabeza);
     while (opcion!=-1){
 
 		printf("\nIngrese una opcion: ");
@@ -446,7 +458,7 @@ int main(){
                 //(tamanioElegido,tamanio);
             } while(tamanio==-1);
             char buffer[1000] = ""; // Buffer para almacenar la salida
-            float buffer2;
+
             disponibilidadColor_Tamanio(cabeza,color,tamanio,buffer);
 
             printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
@@ -460,17 +472,16 @@ int main(){
 
                 FILE *archivoSalida = fopen(nombre_archivo, "w"); 
                 if (archivoSalida == NULL) {
-                    printf("No se pudo abrir el archivo para escribir\n");
+                    printf("\nNo se pudo abrir el archivo para escribir\n");
                     exit(1);
                 }
 
                 fprintf(archivoSalida, "Ingrese el Color: %s \n", colorElegido);
-                fprintf(archivoSalida,"%s\n",buffer);
                 fprintf(archivoSalida,"Ingrese el tamaño de la lata: %.2f \n",tamanio);
-                fprintf(archivoSalida,"%.2f",buffer2);
+                fprintf(archivoSalida,"%s\n",buffer);
                 fclose(archivoSalida);
 
-                printf("Información guardada en el archivo: %s\n", nombre_archivo);
+                printf("\nInformación guardada en el archivo: %s\n", nombre_archivo);
 
     		}else if (strcmp(opcionD, "NO") != 0) {
         		printf("\nNo se guardará el archivo\n");
