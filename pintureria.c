@@ -302,6 +302,34 @@ void totalMarca(lata *cabeza, char* marca, char* buffer){
     }
 }
 
+void totalMarcaColor(lata *cabeza, char* color, char* marca, char* buffer){
+
+    lata *temp = cabeza;
+    int encontrado = 0;
+    float tamanioTotal = 0;
+    int cantLatas = 0;
+
+    while (temp != NULL) {
+        if (strcmp(temp->marca, marca) == 0 && strcmp(temp->color, color) == 0) {
+            encontrado = 1;
+            tamanioTotal += temp->tamanio;
+            cantLatas++;
+        }
+        temp = temp->pLata;
+    }
+
+    if (encontrado) {
+        printf("\nTotal color: %.2f litros\n", tamanioTotal);
+        sprintf(buffer, "\nTotal color: %.2f litros\n", tamanioTotal);
+        printf("Cantidad de latas: %d", cantLatas);
+        sprintf(buffer, "Cantidad de latas: %d", cantLatas);
+    
+    }else if(!encontrado){
+        printf("\n[MARCA Y COLOR NO DISPONIBLE]\n");
+        sprintf(buffer, "\n[MARCA Y COLOR NO DISPONIBLE]\n");
+    }
+}
+
 void validacionInt(int opcion, int scanfopcion){
     if(scanfopcion!=1){      
         printf("\n\nERROR, el dato ingresado no es valido, debe ser un numero entero\n\n");
@@ -590,9 +618,9 @@ int main(){
             strcpy(colorElegido,color);
             convertirMayuscula(color);
 
-            //aca va la funcion
+            totalMarcaColor(cabeza, color, marca, buffer);
 
-            printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
+            printf("\n\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionG);
             convertirMayuscula(opcionG);
 
