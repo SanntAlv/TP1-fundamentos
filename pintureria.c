@@ -2,13 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "lista.h"
 
-typedef struct lata {
-	char marca[20];
-	char color[20];
-	float tamanio;
-	struct lata *pLata;
-} lata;
+/**Autores: Santiago Alvarez, padron: 111935
+ * Santiago Seijas, padron: 112301
+*/
 
 lata* crearProducto(char *marca, char *color, float tamanio) {
     lata *nuevolata = (lata*)malloc(sizeof(lata));
