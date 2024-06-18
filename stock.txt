@@ -1,15 +1,16 @@
-    ALBA
-    ROJO
-    1
+ALBA
+ROJO
+1.00
 
-    COLORIN
-    BLANCO
-    0.5
+POLACRIN
+NEGRO
+4.00
 
-    POLACRIN
-    NEGRO
-    4
+COLORIN
+BLANCO
+0.50
 
-    COLORIN
-    BLANCO
-    0.5
+ALBA
+AZUL
+2.30
+
