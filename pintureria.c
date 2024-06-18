@@ -288,7 +288,7 @@ void totalMarca(lata *cabeza, char* marca, char* buffer){
         sprintf(buffer, "\nLos productos con esa marca son:");
         for (int i = 0; i < cantSumas; i++) {
             printf("%s ", sumas[i].color);
-            sprintf(buffer + strlen(buffer), "\nColores: %s", sumas[i].color);
+            sprintf(buffer + strlen(buffer), "%s ", sumas[i].color);
         }
 
         printf("\nCantidad de latas: %d",cantLatas);
@@ -509,8 +509,11 @@ int main(){
 
                 printf("\nInformación guardada en el archivo: %s\n", nombre_archivo);
 
-    		}else if (strcmp(opcionD, "NO") != 0) {
+    		}else if (strcmp(opcionD, "NO") == 0) {
         		printf("\nNo se guardará el archivo\n");
+            
+            }else{
+                printf("\nERROR AL INGRESAR LA RESPUESTA\n");
             }
             
         }else if(opcion==5){
@@ -528,7 +531,7 @@ int main(){
             char buffer[1000] = ""; // Buffer para almacenar la salida
             totalColor(cabeza,color,buffer);
             
-            printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
+            printf("\n\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionE);
             convertirMayuscula(opcionE);
 
@@ -552,7 +555,11 @@ int main(){
 
             }else if (strcmp(opcionE, "NO") == 0){
         		printf("\nNo se guardará el archivo\n");
+
+            }else{
+                printf("\nERROR AL INGRESAR LA RESPUESTA\n");
             }
+
         }else if(opcion==6){
 
             char marca[20];
@@ -569,7 +576,7 @@ int main(){
 
             totalMarca(cabeza,marca,buffer);
             
-            printf("\n¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
+            printf("\n\n¿¿Desea guardar esta informacion en un archivo de texto(SI/NO)?: ");
             scanf("%s",opcionF);
             convertirMayuscula(opcionF);
 
@@ -593,6 +600,9 @@ int main(){
 
             }else if (strcmp(opcionF, "NO") == 0){
         		printf("\nNo se guardará el archivo\n");
+
+            }else{
+                printf("\nERROR AL INGRESAR LA RESPUESTA\n");
             }
             
  
@@ -635,7 +645,7 @@ int main(){
                 }
 
                 fprintf(archivoSalida, "Ingrese la marca: %s \n", marcaElegida);
-                fprintf(archivoSalida, "Ingrese el color: %s \n", colorElegido);
+                fprintf(archivoSalida, "\n¿Ingrese el color: %s \n", colorElegido);
                 fprintf(archivoSalida,"%s",buffer);
                 fclose(archivoSalida);
 
@@ -643,6 +653,9 @@ int main(){
 
             }else if (strcmp(opcionG, "NO") == 0){
         		printf("\nNo se guardará el archivo\n");
+
+            }else{
+                printf("\nERROR AL INGRESAR LA RESPUESTA\n");
             }
 
         }else if(opcion>8 || opcion<-1 && validarOpcion==1) {
